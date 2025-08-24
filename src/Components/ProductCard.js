@@ -5,8 +5,9 @@ export function ProductCard({ product, onClick,  background, ...restprops }) {
          
          //or background word only if you want to use the prop
     }
+
     return (
-        <div style={{ background, paddingBottom: '20px'}} className="product-card">
+        <div style={{ background }} className="product-card">
             <h2>{product.title}</h2>
             <img src={product.imgSrc} alt={product.title} className="product-image" {...restprops} />
             <ul style={style}>

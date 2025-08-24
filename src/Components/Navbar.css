@@ -1,0 +1,138 @@
+/* Clean navbar styles matching Navbar.js */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #111827; /* dark */
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+.navbar-line {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.navbar-line span {
+  display: block;
+
+  .navbar-filter input[type="search"] {
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid #374151; /* gray-700 */
+    background: #1f2937; /* gray-800 */
+    color: #fff;
+  }
+  /* Style the whole filter form inline */
+  .product-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem; /* horizontal spacing between fields (modern browsers) */
+    column-gap: 1rem; /* extra horizontal spacing */
+    row-gap: 0.5rem; /* vertical spacing when wrapping */
+    flex-wrap: wrap; /* allow wrapping on small widths */
+  }
+  .product-filter > * {
+    /* normalize child margins */
+    margin: 0;
+  }
+  /* Fallback spacing when gap isn't supported */
+  .product-filter > * + * {
+    margin-left: 0.75rem;
+  }
+  /* Vertical spacing when items wrap */
+  .product-filter > * {
+    margin-bottom: 0.5rem;
+  }
+  .product-filter select,
+  .product-filter input[type="number"],
+  .product-filter input[type="search"] {
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: #333;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  .product-filter button {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #374151;
+    background: #111827;
+    color: #fff;
+    cursor: pointer;
+  }
+  .product-filter button:hover {
+    background: #0b1220;
+  }
+  @media (max-width: 768px) {
+    .navbar-filter input[type="search"] {
+      width: 100%;
+    }
+    .product-filter select,
+    .product-filter input[type="number"],
+    .product-filter input[type="search"],
+    .product-filter button {
+      width: 100%; /* stack nicely with spacing from row-gap */
+    }
+  }
+  width: 24px;
+  height: 2px;
+  background: #333;
+  margin: 5px 5px;
+  border-radius: 2px;
+}
+
+/* Desktop: show menu in a row */
+.navbar-menu {
+  display: none;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a,
+.navbar .link {
+  color: #fff;
+  text-decoration: none;
+}
+.navbar-menu.active {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.navbar a:hover,
+.navbar .link:hover {
+  .navbar a {
+    color: #fff;
+  }
+  .navbar .link.active {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .navbar-line {
+      display: inline-block;
+    }
+    .navbar-menu {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 0.5rem;
+    }
+    .navbar-menu.active {
+      display: flex;
+    }
+  }
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}

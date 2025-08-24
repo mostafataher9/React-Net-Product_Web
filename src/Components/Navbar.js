@@ -1,19 +1,34 @@
-import {  Link } from "react-router-dom";
-
-export function Navbar() {
-   return ( 
-        <nav style={{ display: 'flex', gap: '16px', listStyle: 'none', gridTemplateColumns: 'repeat(3, 1fr)' }}>
-         {/*gap: Adds space between flex/grid items (external spacing)
-         padding: Adds space inside an element (internal spacing)  */}
+import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import "./Navbar.css";
+import { ProductFilter } from "./ProductFilter";
+export function Navbar({ onApplyFilters }) {
+   const [open, setOpen] = useState(false);
+   return (
+      <nav className="navbar">
+         <button className="navbar-line" id="navbar-line" onClick={() => setOpen(o => !o)} aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+         </button>
+         {/* Use a list for semantics; flex lays items horizontally */}
+         <ul className={`navbar-menu ${open ? 'active' : ''}`} id="navbar-menu">
             <li>
-               <Link to="/">Home</Link>
+               <NavLink to="/" className={({ isActive }) => isActive ? 'link active' : 'link'}>Home</NavLink>
             </li>
             <li>
-               <Link to="/about">About</Link>
+               <NavLink to="/about" className={({ isActive }) => isActive ? 'link active' : 'link'}>About</NavLink>
             </li>
             <li>
-               <Link to="/contact">Contact</Link>
+               <NavLink to="/contact" className={({ isActive }) => isActive ? 'link active' : 'link'}>Contact</NavLink>
             </li>
-        </nav>
+             <li>
+               <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'link active' : 'link'}>Dashboard</NavLink>
+            </li>
+                  <li className="navbar-filter">
+                     <ProductFilter placeholder="Search…" onApply={onApplyFilters} />
+                  </li>
+         </ul>
+      </nav>
    );
 }

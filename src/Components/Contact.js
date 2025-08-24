@@ -80,7 +80,8 @@ export function Contact() {
 
 
         return (
-        <div className="container my-4 row justify-content-center col-md-8 col-lg-6 card shadow card-body p-4 card-title text-center mb-4">
+            // Bootstrap card markup MAKE THE FORM IN MIDDLE OF PAGE INSTEAD OF HEADACHE OF CSS
+        <div className="card shadow p-4">
             <div>
                 {submitStatus &&  (  <div className={`alert alert-${[...submitStatus]}`} role="alert">
                     {submitStatus === 'success' ? 'Your message has been sent successfully!' : 'There was an error sending your message.'}
@@ -91,32 +92,31 @@ export function Contact() {
                     {deleteStatus === 'success' ? 'Your message has been deleted successfully!' : 'There was an error sending your message.'}
                 </div>)}
             </div>
-            <div className="container mt-4">
             {isEditing ? (
-                <form onSubmit={handleSubmit} className="mb-4">
+                <form onSubmit={handleSubmit} className="mb-0">
                     {/*the messages can be submitted, edited or deleted */}
-                        <div className="form-group mb-3">   
-                            <label htmlFor="name" className="form-control">Name:</label>
-                            <input type="text" id="name" name="name" className="form-control" value={dataForm.name} onChange={handleChange} required />
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="email" className="form-control">Email:</label>
-                            <input type="email" id="email" name="email" className="form-control" value={dataForm.email} onChange={handleChange} required />
-                        </div>
-                        <div className="form-group mb-3">
-                            <label htmlFor="message" className="form-control">Message:</label>
-                            <textarea id="message" name="message" rows= "5" className="form-control" value={dataForm.message} onChange={handleChange} required></textarea>
-                        </div>
-                        <div className="d-grid">
-                            <button className="btn btn-primary" type="submit" aria-label="Submit" disabled={isSubmitting}>
-                            {isSubmitting ? 
-                            <>
-                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Submitting...
-                            </>
-                            : 
-                            "Submit"}</button>
-                        </div>
-                    </form>
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Name</label>
+                        <input type="text" id="name" name="name" className="form-control" value={dataForm.name} onChange={handleChange} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input type="email" id="email" name="email" className="form-control" value={dataForm.email} onChange={handleChange} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="message" className="form-label">Message</label>
+                        <textarea id="message" name="message" rows="5" className="form-control" value={dataForm.message} onChange={handleChange} required></textarea>
+                    </div>
+                    <div className="d-grid">
+                        <button className="btn btn-primary" type="submit" aria-label="Submit" disabled={isSubmitting}>
+                        {isSubmitting ? 
+                        <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Submitting...
+                        </>
+                        : 
+                        "Submit"}</button>
+                    </div>
+                </form>
             ) : (
                 <>
                     <div className="mb-3">
@@ -145,17 +145,18 @@ export function Contact() {
                 </>
             )}
             </div>
-            </div>
         );
   }
   return(
-    <div style={{ padding: '2rem' }}>
-        <section>
-                <Navbar />
-        </section>
-        <section>
-            <h2>Contact Us</h2>
-            <ContactForm />
+    <div>
+        <Navbar />
+        <section className="min-vh-100 d-flex align-items-center justify-content-center py-4">
+            <div className="container d-flex align-items-center justify-content-center">
+              <div className="w-100" style={{ maxWidth: '640px' }}>
+                <h2 className="text-center mb-4">Contact Us</h2>
+                <ContactForm />
+              </div>
+            </div>
         </section>
     </div>
   );

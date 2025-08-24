@@ -7,17 +7,25 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { About } from './Components/About';
 import { Contact } from './Components/Contact';
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import { TableauDashboard } from './Components/TableauDashboard';
+import { Login } from './Components/login';
 
-const router= createBrowserRouter([
+// Flow: not authed -> Login, authed -> App
+function HomeGate() {
+  const isAuthed = typeof window !== 'undefined' && localStorage.getItem('auth') === 'true';
+  return isAuthed ? <App /> : <Login />;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <HomeGate />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/about",
@@ -26,11 +34,17 @@ const router= createBrowserRouter([
   {
     path: "/contact",
     element: <Contact />,
-  }
+  },
+  {
+    path: "/dashboard",
+    element: <TableauDashboard />,
+  },
 ]);
 
 root.render(
-  <RouterProvider router={router} />
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
