@@ -6,6 +6,11 @@ export function ProductCard({ product, onClick,  background, ...restprops }) {
          //or background word only if you want to use the prop
     }
 
+    function handleClick() {
+        product.stockCount -= 1;
+        onClick(product);
+    }
+
     return (
         <div style={{ background }} className="product-card">
             <h2>{product.title}</h2>
@@ -15,10 +20,18 @@ export function ProductCard({ product, onClick,  background, ...restprops }) {
                     <li key={index}>{spec}</li>
                 ))}
             </ul>
-            <span>${product.price}</span>
-            <button onClick={() => onClick(product)}>
-                Buy for ${product.price}
-            </button>
+            {product.stockCount > 0 ? (
+                <p style={{ color: 'light green', display: 'flex', textAlign: 'center', alignItems: 'center' }}>
+                    {product.stockCount} items available </p>) :
+                <p style={{ color: 'light red', display: 'flex', textAlign: 'center', alignItems: 'center' }}> Not available</p>}
+                    <span>${product.price}</span>
+                {product.stockCount > 0 ? (<button onClick={handleClick}>
+                        Buy for ${product.price}
+                    </button>
+                
+            ) : (
+                <button disabled style={{ textAlign: 'center', color: 'red' }}>Out of stock</button>
+            )}
         </div>
     );
 }

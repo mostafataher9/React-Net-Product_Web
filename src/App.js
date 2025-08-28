@@ -10,7 +10,7 @@ function App() {
   // All products defined locally
   const [filters, setFilters] = useState({ category: '', price: 0, searchTerm: '', inStock: false });
   const [currentPage, setCurrentPage] = useState(1);
-  
+  const [purchaseStatus, setPurchaseStatus] = useState(null);
   /*
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,7 +49,7 @@ function App() {
       category: "iPhone",
       price: 999,
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Airpods Pro 2",
@@ -62,7 +62,7 @@ function App() {
       price: 24,
       category: "Airpods",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
      {
       title: "Airpods 1",
@@ -75,7 +75,7 @@ function App() {
       price: 22,
       category: "Airpods",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
      {
       title: "Airpods 2",
@@ -88,7 +88,7 @@ function App() {
       price: 20,
       category: "Airpods",
       inStock: false,
-      nb_items: 0
+      stockCount: 0
     },
      {
       title: "Airpods 3",
@@ -101,7 +101,7 @@ function App() {
       price: 18,
       category: "Airpods",
       inStock: false,
-      nb_items: 0
+      stockCount: 0
     },
     {
       title: "Apple Watch 9",
@@ -114,7 +114,7 @@ function App() {
       price: 100,
       category: "Watch",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Smart Watch",
@@ -127,7 +127,7 @@ function App() {
       price: 25,
       category: "Watch",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Smart Watch 1",
@@ -140,7 +140,7 @@ function App() {
       price: 22,
       category: "Watch",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Headphones 1",
@@ -153,7 +153,7 @@ function App() {
       price: 70,
       category: "Headphones",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Headphones 2",
@@ -166,7 +166,7 @@ function App() {
       price: 75,
       category: "Headphones",
       inStock: false,
-      nb_items: 0
+      stockCount: 0
     },
     {
       title: "Headphones 3",
@@ -179,7 +179,7 @@ function App() {
       price: 80,
       category: "Headphones",
       inStock: false,
-      nb_items: 0
+      stockCount: 0
     },
     {
       title: "Headphones 4",
@@ -192,7 +192,7 @@ function App() {
       price: 100,
       category: "Headphones",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
     {
       title: "Headphones 5",
@@ -205,7 +205,7 @@ function App() {
       price: 120,
       category: "Headphones",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     },
      {
       title: "Whiteboard Pencil",
@@ -218,11 +218,33 @@ function App() {
       price: 15,
       category: "Pencil",
       inStock: true,
-      nb_items: 10
+      stockCount: 10
     }
   ];
 
   const [products, setProducts] = useState(initialProducts);
+
+  function handlePurchase(product) {
+    if (!product.inStock || product.stockCount <= 0) {
+      alert(`The product ${product.title} is out of stock`);
+      return;
+    }
+
+    alert(`The product ${product.title} has cost $${product.price}`);
+    setProducts(prev =>
+    prev.map(p =>
+      p.title === product.title
+        ? {
+            ...p,
+            stockCount: Math.max(0, p.stockCount - 1),
+            inStock: Math.max(0, p.stockCount - 1) > 0
+          }
+        : p
+    )
+  );
+  setPurchaseStatus({ type: 'success', text: `Bought ${product.title}` });
+   setTimeout(() => setPurchaseStatus(null), 3000);
+}
 
   // Compute filtered list
   const filtered = products.filter(p => {
@@ -239,25 +261,9 @@ function App() {
   const endIdx = startIdx + 12;
   const paged = filtered.slice(startIdx, endIdx);
 
-  const handleClick = (product) => {
-    if (!product.inStock || product.nb_items <= 0) {
-      alert(`The product ${product.title} is out of stock`);
-      return;
-    }
-    //inStock: newNb > 0 means instock true if nb >0 and false else
+      //inStock: newNb > 0 means instock true if nb >0 and false else
     // p.title === product.title ? { ...p, nb_items: newNb, inStock: newNb > 0 } : p
     //if the product is correct replace in list with copy with new values
-    alert(`The product ${product.title} has cost $${product.price}`);
-    const newNb = product.nb_items - 1;
-    setProducts(prev => prev.map(p =>
-      p.title === product.title
-        ? { ...p, nb_items: newNb, inStock: newNb > 0 }
-        : p
-    ));
-    //only for debugging
-    alert(product.nb_items);
-  };
-
   /*{...product}
     This is the spread operator (...)
     It creates a shallow copy of the original product object
@@ -287,7 +293,7 @@ function App() {
               <ProductCard 
                 key={product.title}
                 product={product}
-                onClick={handleClick}
+                onClick={handlePurchase}
                 background={cardBackgrounds[index % 4]}  // Here each card gets its background color,  index % 4 to repeat colors
                 width="128px"
                 height="128px"
