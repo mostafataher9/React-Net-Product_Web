@@ -1,8 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
+// Export Users array to be used in other components
+export const Users = [
+    {
+        id: 1,
+        role: "admin",
+        username: "mhmd",
+        email: "mhmd@gmail.com",
+        password: "ad123"
+    },
+    {
+        id: 2,
+        role: "editor",
+        username: "samer",
+        email: "samer@gmail.com",
+        password: "samer456"
+    },
+    {
+        id: 3,
+        role: "user",
+        username: "mahmoud",
+        email: "mahmoud@gmail.com",
+        password: "mahmoud456"
+    },
+    {
+        id: 4,
+        role: "user",
+        username: "kot",
+        email: "kot@gmail.com",
+        password: "kot123"
+    }
+];
+
 export function Login(){
     const navigate = useNavigate();
+
     const [DataForm, setDataForm] = useState({
         user: '',
         name: '',
@@ -11,6 +44,10 @@ export function Login(){
     });
     const [submitStatus, setSubmitStatus] = useState(null);
 
+    var userWithCorrectPassword = null;
+
+    var userWithSameRoleAndName = null;
+
     const handleChange = (event) => {
         //here name and value are name and value of input that catched
         const { name, value } = event.target;
@@ -18,28 +55,70 @@ export function Login(){
     }
     const handleLogin = async(event) => {
         event.preventDefault();
-        try{
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    console.log("Login successful");
-                    resolve();
-                }, 1000);
+        try {
+            // Find user by role, username, email, and password
+            const matchedUser = Users.find(
+                u => u.role === DataForm.user &&
+                     u.username === DataForm.name &&
+                     u.email === DataForm.email &&
+                     u.password === DataForm.password
+            );
+            if (matchedUser) {
+                await new Promise((resolve) => {
+                    setTimeout(() => {
+                        console.log("Login successful");
+                        resolve();
+                    }, 3000);
             });
-            setSubmitStatus('success');
-            // mark authenticated and go to app
-            localStorage.setItem('auth', 'true');
-            navigate('/', { replace: true });
-            setDataForm({
-                user: '',
-                name: '',
-                email: '',
-                password: ''
-            }); 
+                setSubmitStatus('success');
+                // mark authenticated and go to app
+                localStorage.setItem('auth', 'true');
+                navigate('/', { replace: true });
+                setDataForm({
+                    user: '',
+                    name: '',
+                    email: '',
+                    password: ''
+                });
+            } else {
+                // Check if there's a user with the same role and username
+                userWithSameRoleAndName = Users.find(
+                    u => u.role === DataForm.user && u.username === DataForm.name
+                );
+                
+                if (!userWithSameRoleAndName) {
+                    setSubmitStatus('error');
+                    await new Promise((resolve) => {
+                        setTimeout(() => {
+                            console.log("Username not found for this role");
+                            setSubmitStatus(null);
+                            resolve();
+                        }, 3000);
+                    });
+                } else {
+                    // Username exists for role, check password
+                    userWithCorrectPassword = Users.find(
+                        u => u.role === DataForm.user && 
+                             u.username === DataForm.name && 
+                             u.password === DataForm.password
+                    );
+                    
+                    if (!userWithCorrectPassword) {
+                        setSubmitStatus('error');
+                        await new Promise((resolve) => {
+                            setTimeout(() => {
+                                console.log("Incorrect password");
+                                setSubmitStatus(null);
+                                resolve();
+                            }, 3000);
+                        });
+                    }
+                }
+            }
         } catch (error) {
             console.error("Login failed:", error);
             setSubmitStatus('error');
         }
-     
     };
     return(
         <section className="min-vh-100 d-flex align-items-center justify-content-center py-4">
@@ -49,9 +128,19 @@ export function Login(){
                         <div className="card-body p-4">
                             {/* need to change values of user, name, email, password so I need value dataform */}
                             <div>
-                                {submitStatus && (
+                                 {submitStatus === 'success' && (
                                     <div className="alert alert-success">
-                                        {submitStatus === 'success' ? "The login succeeded" : "The login failed"} {submitStatus}
+                                        {"The login succeeded"}
+                                    </div>
+                                )}
+                                {submitStatus === 'error' && (!userWithSameRoleAndName) && (
+                                    <div className="alert alert-danger">
+                                        {"Username not found for this role"}
+                                    </div>
+                                )}
+                                {submitStatus === 'error' && (!userWithCorrectPassword) && (
+                                    <div className="alert alert-danger">
+                                        {"Incorrect password"}
                                     </div>
                                 )}
                             </div>
