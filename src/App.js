@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 // Main App component
 function App() {
   // All products defined locally
-  const [filters, setFilters] = useState({ category: '', price: 0, searchTerm: '', inStock: false });
+  const [filters, setFilters] = useState({ category: '', minprice: 0, maxprice: 999, searchTerm: '', inStock: false });
   const [currentPage, setCurrentPage] = useState(1);
   const [purchaseStatus, setPurchaseStatus] = useState(null);
   /*
@@ -33,6 +33,8 @@ function App() {
     "#fef3c7"   // Light yellow --- IGNORE ---
   ];
 
+  //list contains favorite products
+  const [Favorites, setFavorites] = useState([]);
 
 
    
@@ -223,7 +225,26 @@ function App() {
   ];
 
   const [products, setProducts] = useState(initialProducts);
+  //here we can filter products based on different criteria minprice,maxprice....
+  function handleFilter(key,value) {
+    setFilters(filter => ({
+      ...filter,
+      [key]: value
+    }));
+    setCurrentPage(1); 
+  }
 
+  function handleFavorite(productId){
+    setFavorites(prevFavorites => {
+      if (prevFavorites.includes(productId)) {
+        // If already favorite, remove it
+        return prevFavorites.filter(id => id !== productId);
+      } else {
+        // If not favorite, add it
+        return [...prevFavorites, productId];
+      }
+    });
+  }
   function handlePurchase(product) {
     if (!product.inStock || product.stockCount <= 0) {
       alert(`The product ${product.title} is out of stock`);
@@ -245,15 +266,40 @@ function App() {
   setPurchaseStatus({ type: 'success', text: `Bought ${product.title}` });
    setTimeout(() => setPurchaseStatus(null), 3000);
 }
+ 
+
+
+  function handleTwoPurchase(product) {
+    if (!product.inStock || product.stockCount <= 1) {
+      alert(`The product ${product.title} is out of stock`);
+      return;
+    }
+
+    alert(`The product ${product.title} costs of 2 items is $${product.price * 1.8}`);
+    setProducts(prev =>
+    prev.map(p =>
+      p.title === product.title
+        ? {
+            ...p,
+            stockCount: Math.max(0, p.stockCount - 2),
+            inStock: Math.max(0, p.stockCount - 2) > 0
+          }
+        : p
+    )
+  );
+  setPurchaseStatus({ type: 'success', text: `Bought ${product.title}` });
+   setTimeout(() => setPurchaseStatus(null), 3000);
+}
 
   // Compute filtered list
   const filtered = products.filter(p => {
     //in case no filtering happened all products true so the list will be displayed sa it is
     const matchCat = filters.category ? p.category.toLowerCase() === filters.category.toLowerCase() : true;
-    const matchPrice = filters.price ? Number(p.price) <= Number(filters.price) : true;
+    const matchMinPrice = filters.minprice ? Number(p.price) >= Number(filters.minprice) : true;
+    const matchMaxPrice = filters.maxprice ? Number(p.price) <= Number(filters.maxprice) : true;
     const matchSearch = filters.searchTerm ? p.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) : true;
     const matchStock = filters.inStock ? p.inStock === true : true;
-    return matchCat && matchPrice && matchSearch && matchStock;
+    return matchCat && matchMinPrice && matchMaxPrice && matchSearch && matchStock;
   });
 
   const totalPages= Math.ceil(filtered.length / 12) || 1; // Assuming 12 products per page
@@ -280,7 +326,7 @@ function App() {
       {location !== "/about" && (location !== "/contact") && (
           <div className="App">
             {/* app comp says to navbar that I need filters, so navbar sends onApplyFilters to ProductFilter */}
-            <Navbar onApplyFilters={(f) => { setFilters(f); setCurrentPage(1); }} />
+            <Navbar onApplyFilters={(key,value) => { handleFilter(key,value) }} />
             <h1>Product Catalog</h1>
             {/* Filters */}
             <div style={{ marginBottom: '1rem' }}>
@@ -289,11 +335,16 @@ function App() {
             {/* Render ProductList component with children as ProductCard components */}
             <ProductList>
             {/* Map through products array to render ProductCard components */}
+            {/*onOffer={handleTwoPurchase} here buying 2 with offer*/}
+            {/* includes return true or false to distinguish in favorite or not isFavorite={Favorites.includes(product.id)}*/}
             { paged.map((product, index) => (
               <ProductCard 
                 key={product.title}
                 product={product}
                 onClick={handlePurchase}
+                onOffer={handleTwoPurchase} 
+                onFavorite={handleFavorite}
+                isFavorite={Favorites.includes(product.id)}
                 background={cardBackgrounds[index % 4]}  // Here each card gets its background color,  index % 4 to repeat colors
                 width="128px"
                 height="128px"

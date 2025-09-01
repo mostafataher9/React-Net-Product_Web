@@ -2,7 +2,8 @@ import {useState} from 'react';
 export function ProductFilter({ onApply }) {
   // Controls only; parent provides products and does the filtering
   const [inStock, SetInStock] = useState(false);
-  const [price, SetPrice] = useState(0);
+  const [minprice, SetMinPrice] = useState(0);
+  const [maxprice, SetMaxPrice] = useState(999);
   const [selectedCategory, SetSelectedCategory] = useState("");
   const [searchTerm, SetSearchTerm] = useState("");
   const categories=["iPhone", "Watch", "Airpods", "Headphones", "Pencil"];
@@ -11,7 +12,8 @@ export function ProductFilter({ onApply }) {
     const filters = {
       // || used in case if user did\n't use this filter like category, price..
       category: selectedCategory || "",
-      price: Number(price) || 0,
+      minprice:  minprice || 0,
+      maxprice:  maxprice || 999,
       searchTerm: searchTerm || "",
       inStock: Boolean(inStock)
     };
@@ -29,7 +31,10 @@ export function ProductFilter({ onApply }) {
         ))}
       </select>
 
-  <input type="number" min="0" step="1" value={price} onChange={(e) => SetPrice(e.target.value)} placeholder="Max price" style={{ marginRight: '12px' }} />
+  {/* Price Range Inputs by defaultValue={minprice}*/}
+  <input type="number" defaultValue={minprice} min="0" step="1" onChange={(e) => SetMinPrice(e.target.value)} placeholder="Min price" style={{ marginRight: '12px' }} />
+
+  <input type="number" defaultValue={maxprice} min="0" step="1" onChange={(e) => SetMaxPrice(e.target.value)} placeholder="Max price" style={{ marginRight: '12px' }} />
 
       <input type="text" value={searchTerm} onChange={(e) => SetSearchTerm(e.target.value)} placeholder="Search products..." style={{ marginRight: '12px' }} />
       {/* Checkbox: wrap input in label so clicking text toggles */}
