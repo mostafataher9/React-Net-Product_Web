@@ -4,7 +4,6 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import styles from './ProductCard.module.css';
 
 export function ProductCard({ product, onClick, onOffer, isFavorite, onFavorite, background, ...restprops }) {
-    const [stockCount,setStockCount] = useState(product.stockCount);
     const [showMore, setShowMore] = useState(false);
     const style={
         listStyleType: 'none',
@@ -13,9 +12,13 @@ export function ProductCard({ product, onClick, onOffer, isFavorite, onFavorite,
     }
 
     function handleClick() {
-        setStockCount(prevstockCount => prevstockCount - 1);
+        //This is one way
+        // setStockCount((prevstockCount)=> prevstockCount - 1);
         //the above command is more safer than  setStockCount(stockCount - 1); especially when working with api or in dynamic locations
+        // 2nd way:
         onClick(product);
+
+
     }
 
     function handleTwoClicks() {
@@ -27,9 +30,11 @@ export function ProductCard({ product, onClick, onOffer, isFavorite, onFavorite,
        setStockCount((prevstockCount)=> prevstockCount - 1);
        setStockCount((prevstockCount)=> prevstockCount - 1); */
        /*2nd method: */
-       setStockCount((prevstockCount)=> prevstockCount - 2);
-        //the above command is more safer than  setStockCount(stockCount - 2);
-        onOffer(product);
+       //setStockCount((prevstockCount)=> prevstockCount - 2);
+       //the above command is more safer than  setStockCount(stockCount - 2);
+       /*Third method*/
+       onOffer(product);
+       
     }
 
     return (
