@@ -1,5 +1,6 @@
 import {Navbar} from './Navbar'; // Assuming you have a Navbar component
-export function About(){
+import {Helmet} from 'react-helmet';
+export function About({page}){
     const team=[
        { name: "Ali", role: "CEO", bio: "Founder and CEO of the company" },
        { name: "Bob", role: "CTO", bio: "Chief Technology Officer" },
@@ -22,7 +23,13 @@ export function About(){
     return (
      <div style={{ padding: '2rem' }}>
         <section>
-            <Navbar />
+         <Helmet>
+                      <title>{page?.titleTag || 'About Us'}</title>
+                      <meta name="description" content={page?.metaDescription || 'Learn more about our company'} />
+                      <meta name="keywords" content={page?.metaKeywords || 'about, company, story'} />
+                      <h1>{page?.title || 'About Us'}</h1>
+         </Helmet>
+          <Navbar />
         </section>
         <section>
             <h2>Our Story</h2>

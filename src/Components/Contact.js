@@ -1,8 +1,8 @@
 import {Navbar} from './Navbar'; // Assuming you have a Navbar component
 import React from 'react';
 import { useState } from 'react';
-export function Contact() {
- 
+import {Helmet} from 'react-helmet';
+export function Contact({page}) {
      function ContactForm() {
         // 1st method: Controlled Components
         const [dataForm, setDataForm] = useState({
@@ -92,6 +92,15 @@ export function Contact() {
                     {deleteStatus === 'success' ? 'Your message has been deleted successfully!' : 'There was an error sending your message.'}
                 </div>)}
             </div>
+
+              
+           <Helmet>
+                      <title>{page?.titleTag || 'Contact Us'}</title>
+                      <meta name="description" content={page?.metaDescription || 'Contact us for any questions'} />
+                      <meta name="keywords" content={page?.metaKeywords || 'contact, support, help'} />
+                      <h1>{page?.title || 'Contact Us'}</h1>
+           </Helmet>
+            <Navbar />
             {isEditing ? (
                 <form onSubmit={handleSubmit} className="mb-0">
                     {/*the messages can be submitted, edited or deleted */}

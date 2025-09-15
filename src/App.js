@@ -6,12 +6,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductService from './Service/ProductService';
 import React, { useState, useEffect } from 'react';
 import { products as initialProducts } from './Data/product';
-
+import {Helmet} from 'react-helmet';
 // Define initial products and keep products in React state
 
 
 // Main App component
-function App() {
+function App({ page }) {
   // All products defined locally
   
   useEffect(() => {
@@ -143,9 +143,16 @@ function App() {
     <>
       {location !== "/about" && (location !== "/contact") && (
           <div className="App">
-            {/* app comp says to navbar that I need filters, so navbar sends onApplyFilters to ProductFilter */}
-            <Navbar onApplyFilters={(key,value) => { handleFilter(key,value) }} />
-            <h1>Product Catalog</h1>
+            <Helmet>
+              <title>{page?.titleTag || 'Product Catalog'}</title>
+              <meta name="description" content={page?.metaDescription || 'Browse our amazing product collection'} />
+              <meta name="keywords" content={page?.metaKeywords || 'products, shop, catalog'} />
+              {/* app comp says to navbar that I need filters, so navbar sends onApplyFilters to ProductFilter */}
+              <h1>{page?.title || 'Product Catalog'}</h1>
+            </Helmet>
+
+             <Navbar onApplyFilters={(key,value) => { handleFilter(key,value) }} />
+
             {/* Filters */}
             <div style={{ marginBottom: '1rem' }}>
               {/* ProductFilter lives inside Navbar in your setup; if you prefer here, we could move it */}
@@ -191,3 +198,4 @@ function App() {
 
 
 export default App;
+export { initialProducts as products };
