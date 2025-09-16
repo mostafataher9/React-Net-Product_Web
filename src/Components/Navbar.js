@@ -25,6 +25,9 @@ export function Navbar({ onApplyFilters }) {
              <li>
                <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'link active' : 'link'}>Dashboard</NavLink>
             </li>
+            <li>
+               <NavLink to="/admin" className={({ isActive }) => isActive ? 'link active' : 'link'}>Admin</NavLink>
+            </li>
                   <li className="navbar-filter">
                      <ProductFilter placeholder="Search…" onApply={onApplyFilters} />
                   </li>
