@@ -1,6 +1,5 @@
 import {Navbar} from './Navbar'; // Assuming you have a Navbar component
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from "react";
 import {Helmet} from 'react-helmet';
 export function Contact({page}) {
      function ContactForm() {
@@ -80,8 +79,8 @@ export function Contact({page}) {
 
 
         return (
-            // Bootstrap card markup MAKE THE FORM IN MIDDLE OF PAGE INSTEAD OF HEADACHE OF CSS
-        <div className="card shadow p-4">
+            <>
+        <div className="card shadow mt-100 p-4">
             <div>
                 {submitStatus &&  (  <div className={`alert alert-${[...submitStatus]}`} role="alert">
                     {submitStatus === 'success' ? 'Your message has been sent successfully!' : 'There was an error sending your message.'}
@@ -100,7 +99,14 @@ export function Contact({page}) {
                       <meta name="keywords" content={page?.metaKeywords || 'contact, support, help'} />
                       <h1>{page?.title || 'Contact Us'}</h1>
            </Helmet>
-            <Navbar />
+
+           <head>
+            <title> About Us </title>
+            <img src="../../../public/product_shop_icon.png" alt="Product Shop Icon" />
+          </head>
+          
+            
+
             {isEditing ? (
                 <form onSubmit={handleSubmit} className="mb-0">
                     {/*the messages can be submitted, edited or deleted */}
@@ -154,11 +160,12 @@ export function Contact({page}) {
                 </>
             )}
             </div>
+            </>
         );
   }
   return(
     <div>
-        <Navbar />
+    <Navbar showFilter={false} />
         <section className="min-vh-100 d-flex align-items-center justify-content-center py-4">
             <div className="container d-flex align-items-center justify-content-center">
               <div className="w-100" style={{ maxWidth: '640px' }}>

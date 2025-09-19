@@ -1,5 +1,7 @@
 import {Navbar} from './Navbar'; // Assuming you have a Navbar component
 import {Helmet} from 'react-helmet';
+import React from "react";
+import './Navbar.css';
 export function About({page}){
     const team=[
        { name: "Ali", role: "CEO", bio: "Founder and CEO of the company" },
@@ -23,13 +25,15 @@ export function About({page}){
     return (
      <div style={{ padding: '2rem' }}>
         <section>
-         <Helmet>
+         <Helmet>     
                       <title>{page?.titleTag || 'About Us'}</title>
                       <meta name="description" content={page?.metaDescription || 'Learn more about our company'} />
                       <meta name="keywords" content={page?.metaKeywords || 'about, company, story'} />
-                      <h1>{page?.title || 'About Us'}</h1>
+                      <link rel="icon" type="image/png" href="/react-crash-course/src/my-admin-panel/public/product_shop_icon.png" />
          </Helmet>
-          <Navbar />
+
+          <Navbar showFilter={false} />
+
         </section>
         <section>
             <h2>Our Story</h2>

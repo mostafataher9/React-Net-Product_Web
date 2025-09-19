@@ -2,16 +2,6 @@ import {Users} from '../../Components/login';
 import {products} from '../../App';
 
 
-function EditPageMeta({page}){
-    return(
-        <form>
-            <input value={page.title} type="text" placeholder="Edit Title Tag" />
-            <textarea value={page.metaDescription} placeholder="Edit Meta Description" />
-            <input value={page.metaKeywords} type="text" placeholder="Edit Meta Keywords" />
-            <button type="submit">Save</button>
-        </form>
-    )
-}
 export function Activities() {
     const activities = [{
        id: 1,

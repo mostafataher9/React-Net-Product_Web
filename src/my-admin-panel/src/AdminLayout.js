@@ -1,19 +1,16 @@
 import { Outlet, Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 import "../../Components/Navbar.css";
 export function AdminLayout(){
-      const [open, setOpen] = useState(false);
        return (
               <>
                         <nav className="navbar">
-                           <button className="navbar-line" id="navbar-line" onClick={() => setOpen(o => !o)} aria-label="Toggle menu">
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                           </button>
-                           {/* Use a list for semantics; flex lays items horizontally */}
-                           <ul className={`navbar-menu ${open ? 'active' : ''}`} id="navbar-menu">
+                           {/* Navigation menu at the top */}
+                           <ul className="navbar-menu active" id="navbar-menu">
+                              <li>
+                                 <NavLink to="/" className={({ isActive }) => isActive ? 'link active' : 'link'}>Home</NavLink>
+                              </li>
                               <li>
                                  <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? 'link active' : 'link'}>Dashboard</NavLink>
                               </li>
@@ -28,6 +25,7 @@ export function AdminLayout(){
                         <main>
                               <Outlet />
                         </main>
+                        
             </>
       );
 }

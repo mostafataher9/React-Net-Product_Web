@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import {Navbar} from "../../Components/Navbar";
 const SCRIPT_SRC = "https://public.tableau.com/javascripts/api/tableau-2.min.js";
 const VIZ_URL = "https://public.tableau.com/views/Product_Shop_Dashboard/Dashboard1?:showVizHome=no&:embed=y";
 
@@ -39,14 +38,9 @@ export function TableauDashboard({ url = VIZ_URL, height = 800 }) {
   }, [url, height]);
 
   return (
-    <>
-      <section>
-        <Navbar />
-      </section>
-      <section>
-        <h2 style={{ fontWeight: "bold", textAlign: "center"}}>Products_Shop_Dashboard</h2>
-        <div ref={containerRef} style={{ width: "100%", height: `${height}px` }} />
-      </section>
-    </>
+    <section>
+      <h2 style={{ fontWeight: "bold", textAlign: "center"}}>Products_Shop_Dashboard</h2>
+      <div ref={containerRef} style={{ width: "100%", height: `${height}px` }} />
+    </section>
   );
 }

@@ -84,8 +84,6 @@ function App({ page }) {
   setPurchaseStatus({ type: 'success', text: `Bought ${product.title}` });
    setTimeout(() => setPurchaseStatus(null), 3000);
 }
- 
-
 
   function handleTwoPurchase(product) {
     if (!product.inStock || product.stockCount <= 1) {
@@ -162,7 +160,7 @@ function App({ page }) {
             {/* Map through products array to render ProductCard components */}
             {/*onOffer={handleTwoPurchase} here buying 2 with offer*/}
             {/* includes return true or false to distinguish in favorite or not isFavorite={Favorites.includes(product.id)}*/}
-            { paged.map((product, index) => (
+            { paged.map((product) => (
               <ProductCard 
                 key={product.title}
                 product={product}
@@ -170,7 +168,8 @@ function App({ page }) {
                 onOffer={handleTwoPurchase} 
                 onFavorite={handleFavorite}
                 isFavorite={Favorites.includes(product.id)}
-                background={cardBackgrounds[index % 4]}  // Here each card gets its background color,  index % 4 to repeat colors
+                background={cardBackgrounds[(product.id % 4)-1]}  // Here each card gets its background color,  index % 4 to repeat colors
+                colorIndex={(product.id % 4)-1}  // Pass the color index so cards with same color show same number
                 width="128px"
                 height="128px"
               />

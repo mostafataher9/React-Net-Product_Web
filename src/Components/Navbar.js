@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import React, { useState } from "react";
 import "./Navbar.css";
 import { ProductFilter } from "./ProductFilter";
-export function Navbar({ onApplyFilters }) {
+export function Navbar({ onApplyFilters, showFilter = true }) {
    const [open, setOpen] = useState(false);
    return (
       <nav className="navbar">
@@ -11,6 +11,10 @@ export function Navbar({ onApplyFilters }) {
             <span></span>
             <span></span>
          </button>
+
+          <div className="navbar-filter">
+                     {showFilter ? <ProductFilter placeholder="Search…" onApply={onApplyFilters} /> : <div style={{ height: '40px' }}></div>}
+            </div>
          {/* Use a list for semantics; flex lays items horizontally */}
          <ul className={`navbar-menu ${open ? 'active' : ''}`} id="navbar-menu">
             <li>
@@ -23,15 +27,12 @@ export function Navbar({ onApplyFilters }) {
                <NavLink to="/contact" className={({ isActive }) => isActive ? 'link active' : 'link'}>Contact</NavLink>
             </li>
              <li>
-               <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'link active' : 'link'}>Dashboard</NavLink>
+               <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? 'link active' : 'link'}>Dashboard</NavLink>
             </li>
             <li>
                <NavLink to="/admin" className={({ isActive }) => isActive ? 'link active' : 'link'}>Admin</NavLink>
             </li>
-                  <li className="navbar-filter">
-                     <ProductFilter placeholder="Search…" onApply={onApplyFilters} />
-                  </li>
          </ul>
-      </nav>
+        </nav>
    );
 }
